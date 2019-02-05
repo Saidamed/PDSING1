@@ -1,5 +1,4 @@
-package pojo;
-
+package personne;
 
 public class Personne {
 	private String nom;

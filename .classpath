@@ -4,5 +4,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="C:/Users/utilisateur/Downloads/mysql-connector-java-5.0.8-bin.jar"/>
 	<classpathentry kind="lib" path="C:/Users/utilisateur/Documents/gson-1.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/utilisateur/Downloads/org.json.jar/org.json.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

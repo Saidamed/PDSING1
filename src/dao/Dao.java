@@ -2,7 +2,7 @@ package dao;
 
 import java.sql.Connection;
 
-import pojo.Personne;
+import personne.Personne;
 /**
  * @param <T>
  * this abstract class defines all the methods and parameters needed on DAO classes

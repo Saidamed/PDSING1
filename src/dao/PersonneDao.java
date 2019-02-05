@@ -4,19 +4,19 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import pojo.Personne;
+import personne.Personne;
 
 
 
-public class PersonneDAO extends Dao<Personne>{
+public class PersonneDao extends Dao<Personne>{
 	
 	private Connection con;
 	
-	//C'est le constructeur de PersonneDAO.
+	//C'est le constructeur de PersonneDao.
 	 
 	
 	
-	public PersonneDAO(Connection conn) {
+	public PersonneDao(Connection conn) {
 		super(conn);
         this.con=conn;
 	}
