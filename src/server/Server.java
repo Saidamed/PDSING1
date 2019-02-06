@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-//import tmp de database
+//import tmp from database
 import connexion.Database;
 import dao.PersonneDao;
 import personne.Personne;
@@ -27,70 +27,66 @@ public class Server {
 
 		ServerSocket serverSocket = new ServerSocket(2001);
 		System.out.println("Le serveur ecoute sur le port 2001 :");
-		
+		Database db = new Database(2);
 		try {
-			
-		
-		while (true) {
-			Socket socket= serverSocket.accept();
-			startHandler(socket);
+
+			while (true) {
+				Socket socket = serverSocket.accept();
+				startHandler(socket, db);
+			}
+		} finally {
+			serverSocket.close();
+
 		}
-	} finally {
-		serverSocket.close();
-		
-	}
 	}
 
-	private static void startHandler(final Socket socket) throws IOException{
+	private static void startHandler(final Socket socket, Database db) throws IOException {
 		Thread thread = new Thread() {
-			public void run () {
-				
+			public void run() {
+
 				Boolean running = true;
+				Connection database = null;
 				try {
-					Connection database = Database.getConnection();
-					OutputStreamWriter ecrire = new OutputStreamWriter (socket.getOutputStream(), "UTF-8");
-					BufferedReader lire = new BufferedReader(new InputStreamReader (socket.getInputStream(), "UTF-8"));	
-					while(running) {
+					database = db.getConnection();
+					OutputStreamWriter ecrire = new OutputStreamWriter(socket.getOutputStream(), "UTF-8");
+					BufferedReader lire = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+					while (running) {
 						PersonneDao personneDao = new PersonneDao(database);
-						System.out.println("bocucle");
-						String line= lire.readLine();
+						System.out.println("boucle");
+						String line = lire.readLine();
 						System.out.println("server recieved 1 " + line);
-						if(line.equals("insertionClient")) {
+						if (line.equals("insertionClient")) {
 							String client = lire.readLine();
-							JSONObject jsonObject= new JSONObject(client);
-							String nameClient = jsonObject.getString("client");
+							JSONObject jsonObject = new JSONObject(client);  // receive the json object 
+							String nameClient = jsonObject.getString("client"); // put the json object inside a String nameClient
 							System.out.println("server recieved 2 " + nameClient);
-							
-							//ici on a le nom du client
-							Personne pers = new Personne(nameClient);
+							Personne pers = new Personne(nameClient); 
 							personneDao.create(pers);
 							
-						}else {
+
+						} else {
 							JSONObject jsonObject = new JSONObject(line);
 							ecrire.write(jsonObject.toString() + "\n");
 							ecrire.flush();
 						}
 					}
-				} catch (IOException | JSONException | SQLException e) {
+				} catch (IOException | JSONException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					db.close(database);
+					// e.printStackTrace();
 				} finally {
 					closeSocket();
 				}
-				
-			
-			
-		}
-		
-		private void closeSocket() {
-			try {
-			socket.close();
-		} catch (IOException e) {
-	}
-		}
+
+			}
+
+			private void closeSocket() {
+				try {
+					socket.close();
+				} catch (IOException e) {
+				}
+			}
 		};
 		thread.start();
 	}
 }
-
-
