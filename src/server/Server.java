@@ -57,12 +57,12 @@ public class Server {
 						System.out.println("server recieved 1 " + line);
 						if (line.equals("insertionClient")) {
 							String client = lire.readLine();
-							JSONObject jsonObject = new JSONObject(client);  // receive the json object 
-							String nameClient = jsonObject.getString("client"); // put the json object inside a String nameClient
+							JSONObject jsonObject = new JSONObject(client); // receive the json object
+							String nameClient = jsonObject.getString("client"); // put the json object inside a String
+																				// nameClient
 							System.out.println("server recieved 2 " + nameClient);
-							Personne pers = new Personne(nameClient); 
+							Personne pers = new Personne(nameClient);
 							personneDao.create(pers);
-							
 
 						} else {
 							JSONObject jsonObject = new JSONObject(line);

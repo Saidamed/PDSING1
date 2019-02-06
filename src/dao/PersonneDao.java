@@ -6,34 +6,29 @@ import java.sql.SQLException;
 
 import personne.Personne;
 
+public class PersonneDao extends Dao<Personne> {
 
-
-public class PersonneDao extends Dao<Personne>{
-	
 	private Connection con;
-	
-	//C'est le constructeur de PersonneDao.
-	 
-	
-	
+
 	public PersonneDao(Connection conn) {
 		super(conn);
-        this.con=conn;
+		this.con = conn;
 	}
-	
-	public Connection getConnection(){
-        return this.con;
-    }
+
+	public Connection getConnection() {
+		return this.con;
+	}
 
 	@Override
 	public boolean create(Personne obj) {
-		   try{
-	            this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeUpdate("INSERT INTO personne(nom) values (\'"+obj.getNom()+"\')");
-	            return true;
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	        return false;
+		try {
+			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeUpdate("INSERT INTO personne(nom) values (\'" + obj.getNom() + "\')");
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
@@ -50,30 +45,34 @@ public class PersonneDao extends Dao<Personne>{
 
 	@Override
 	public Personne find(String nom) {
-		  try{
-	            ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT nom FROM personne Where nom='"+nom+"'");
-	            while(result.next()) {
-	            	Personne p = new Personne(result.getString("nom"));
-	                return p;
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	        return null;
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT nom FROM personne Where nom='" + nom + "'");
+			while (result.next()) {
+				Personne p = new Personne(result.getString("nom"));
+				return p;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
-	public Personne find () {
-		 try{
-	            ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT nom FROM personne");
-	            while(result.next()) {
-	            	Personne p = new Personne(result.getString("nom"));
-	                return p;
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	        return null;
+	public Personne find() {
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT nom FROM personne");
+			while (result.next()) {
+				Personne p = new Personne(result.getString("nom"));
+				return p;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

@@ -36,7 +36,9 @@ public class Database {
 	public static Connection connect() throws SQLException {
 		return DriverManager.getConnection(url, user, password);
 	}
-	// This method delete a connection in the table of the available connections and add a connection in the table of the connection used
+
+	// This method delete a connection in the table of the available connections and
+	// add a connection in the table of the connection used
 	public Connection getConnection() {
 		if (!pool.isEmpty()) {
 			Connection tmp = pool.remove(pool.size() - 1);
