@@ -35,7 +35,8 @@ public class Client {
 				System.out.println("bye");
 			}else {
 			//envoi une message au serveur
-				ecrire.write("insertionClient\n");
+				JSONObject jsonObject = new JSONObject("{client:"+str+"}") ;
+				ecrire.write(jsonObject.toString() + "insertionClient\\n");
 				ecrire.flush();
 				ecrire.write(str+"\n");
 				ecrire.flush();
