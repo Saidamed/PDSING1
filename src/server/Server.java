@@ -57,9 +57,12 @@ public class Server {
 						System.out.println("server recieved 1 " + line);
 						if(line.equals("insertionClient")) {
 							String client = lire.readLine();
-							System.out.println("server recieved 2 " + client);
+							JSONObject jsonObject= new JSONObject(client);
+							String nameClient = jsonObject.getString("client");
+							System.out.println("server recieved 2 " + nameClient);
+							
 							//ici on a le nom du client
-							Personne pers = new Personne(client);
+							Personne pers = new Personne(nameClient);
 							personneDao.create(pers);
 							
 						}else {
