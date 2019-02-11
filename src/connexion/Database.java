@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.Connection;
 
-// Connexion pour la bd
 
 public class Database {
 	private static final String driver_name = "com.mysql.jdbc.Driver";
@@ -17,9 +16,9 @@ public class Database {
 	private int nbConnection = 0;
 
 	public Database(int nbCo) {
-		this.nbConnection = nbCo;
-		this.pool = new ArrayList<>();
-		this.poolInUse = new ArrayList<>();
+		this.setNbConnection(nbCo);
+		this.setPool(new ArrayList<>());
+		this.setPoolInUse(new ArrayList<>());
 		connectAll();
 	}
 
@@ -40,9 +39,9 @@ public class Database {
 	// This method delete a connection in the table of the available connections and
 	// add a connection in the table of the connection used
 	public Connection getConnection() {
-		if (!pool.isEmpty()) {
-			Connection tmp = pool.remove(pool.size() - 1);
-			this.poolInUse.add(tmp);
+		if (!getPool().isEmpty()) {
+			Connection tmp = getPool().remove(getPool().size() - 1);
+			this.getPoolInUse().add(tmp);
 			return tmp;
 		} else {
 			return null;
@@ -51,24 +50,49 @@ public class Database {
 
 	public void close(Connection con) {
 		if (con != null) {
-			this.pool.add(con);
-			boolean value = this.poolInUse.remove(con);
+			this.getPool().add(con);
+			boolean value = this.getPoolInUse().remove(con);
 			if (!value) {
-				System.out.println("erreur connection do not exist");
+				System.out.println("erreur : la connexion n'existe pas");
 			} else {
-				System.out.println("connection closed");
+				System.out.println("connexion fermée , il reste "+this.getPool().size()+" connexion(s) disponible(s)");
+				
 			}
 		}
 	}
 
 	private void connectAll() {
 		try {
-			for (int i = 0; i < this.nbConnection; i++) {
-				this.pool.add(connect());
+			for (int i = 0; i < this.getNbConnection(); i++) {
+				this.getPool().add(connect());
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public int getNbConnection() {
+		return nbConnection;
+	}
+
+	public void setNbConnection(int nbConnection) {
+		this.nbConnection = nbConnection;
+	}
+
+	public ArrayList<Connection> getPoolInUse() {
+		return poolInUse;
+	}
+
+	public void setPoolInUse(ArrayList<Connection> poolInUse) {
+		this.poolInUse = poolInUse;
+	}
+
+	public ArrayList<Connection> getPool() {
+		return pool;
+	}
+
+	public void setPool(ArrayList<Connection> pool) {
+		this.pool = pool;
 	}
 
 }

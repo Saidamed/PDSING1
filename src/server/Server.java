@@ -28,16 +28,31 @@ public class Server {
 		ServerSocket serverSocket = new ServerSocket(2001);
 		System.out.println("Le serveur ecoute sur le port 2001 :");
 		Database db = new Database(2);
+		System.out.println("il y a "+db.getNbConnection()+" connexion(s) disponible(s)");
 		try {
 
 			while (true) {
 				Socket socket = serverSocket.accept();
+				if(db.getPool().size()!=0) {
+					
+				
 				startHandler(socket, db);
-			}
-		} finally {
-			serverSocket.close();
+			
+		} else {
+			System.out.println("une tentative de connexion echouée ");
+			socket.close();
+		}
+			
+			
+			
 
 		}
+		}
+			finally {
+				
+				serverSocket.close();
+			}
+		
 	}
 
 	private static void startHandler(final Socket socket, Database db) throws IOException {
@@ -50,24 +65,25 @@ public class Server {
 					database = db.getConnection();
 					OutputStreamWriter ecrire = new OutputStreamWriter(socket.getOutputStream(), "UTF-8");
 					BufferedReader lire = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+					System.out.println("connexion(s) utilisée(s) :  " + db.getPoolInUse().size());
+					System.out.println("il y a " + db.getPool().size() + " connexion(s) disponible(s)");
+
 					while (running) {
 						PersonneDao personneDao = new PersonneDao(database);
-						System.out.println("boucle");
 						String line = lire.readLine();
-						System.out.println("server recieved 1 " + line);
-						if (line.equals("insertionClient")) {
+						if (line.equals("insertionduClient")) {
 							String client = lire.readLine();
 							JSONObject jsonObject = new JSONObject(client); // receive the json object
-							String nameClient = jsonObject.getString("client"); // put the json object inside a String
-																				// nameClient
-							System.out.println("server recieved 2 " + nameClient);
+							String nameClient = jsonObject.getString("client");// put the json object inside a String
 							Personne pers = new Personne(nameClient);
 							personneDao.create(pers);
+							System.out.println("personne créée :  " + nameClient);
 
 						} else {
 							JSONObject jsonObject = new JSONObject(line);
 							ecrire.write(jsonObject.toString() + "\n");
 							ecrire.flush();
+
 						}
 					}
 				} catch (IOException | JSONException e) {
@@ -76,6 +92,7 @@ public class Server {
 					// e.printStackTrace();
 				} finally {
 					closeSocket();
+
 				}
 
 			}
