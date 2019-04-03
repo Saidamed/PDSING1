@@ -10,15 +10,15 @@ public class Database {
 	private static final String driver_name = "com.mysql.jdbc.Driver";
 	private static final String url = "jdbc:mysql://localhost:3306/basedetest";
 	private static final String user = "root";
-	private static final String password = "";
+	private static final String password = "root";
 	private ArrayList<Connection> pool;
 	private ArrayList<Connection> poolInUse;
 	private int nbConnection = 0;
 
 	public Database(int nbCo) {
 		this.setNbConnection(nbCo);
-		this.setPool(new ArrayList<>());
-		this.setPoolInUse(new ArrayList<>());
+		this.setPool(new ArrayList<Connection>());
+		this.setPoolInUse(new ArrayList<Connection>());
 		connectAll();
 	}
 
@@ -55,7 +55,7 @@ public class Database {
 			if (!value) {
 				System.out.println("erreur : la connexion n'existe pas");
 			} else {
-				System.out.println("connexion fermée , il reste "+this.getPool().size()+" connexion(s) disponible(s)");
+				System.out.println("connexion fermï¿½e , il reste "+this.getPool().size()+" connexion(s) disponible(s)");
 				
 			}
 		}

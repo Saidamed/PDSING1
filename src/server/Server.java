@@ -11,14 +11,17 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.*;
 
 //import tmp from database
 import connexion.Database;
+import dao.MagasinDao;
 import dao.PersonneDao;
+import personne.Magasin;
 import personne.Personne;
+import personne.Profile;
 
 public class Server {
 
@@ -39,7 +42,7 @@ public class Server {
 				startHandler(socket, db);
 			
 		} else {
-			System.out.println("une tentative de connexion echouée ");
+			System.out.println("une tentative de connexion echou?e ");
 			socket.close();
 		}
 			
@@ -55,38 +58,76 @@ public class Server {
 		
 	}
 
-	private static void startHandler(final Socket socket, Database db) throws IOException {
+	private static void startHandler(final Socket socket,final Database db) throws IOException {
 		Thread thread = new Thread() {
 			public void run() {
-
+				final GsonBuilder builder = new GsonBuilder();
+				final Gson gson = builder.create();
 				Boolean running = true;
 				Connection database = null;
 				try {
 					database = db.getConnection();
 					OutputStreamWriter ecrire = new OutputStreamWriter(socket.getOutputStream(), "UTF-8");
 					BufferedReader lire = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
-					System.out.println("connexion(s) utilisée(s) :  " + db.getPoolInUse().size());
+					System.out.println("connexion(s) utilis?e(s) :  " + db.getPoolInUse().size());
 					System.out.println("il y a " + db.getPool().size() + " connexion(s) disponible(s)");
-
+					PersonneDao personneDao = new PersonneDao(database);
+					MagasinDao magasinDao = new MagasinDao(database);
 					while (running) {
-						PersonneDao personneDao = new PersonneDao(database);
+
+
 						String line = lire.readLine();
+						System.out.println(line);
 						if (line.equals("insertionduClient")) {
 							String client = lire.readLine();
-							JSONObject jsonObject = new JSONObject(client); // receive the json object
-							String nameClient = jsonObject.getString("client");// put the json object inside a String
-							Personne pers = new Personne(nameClient);
+							Personne pers = new Personne(client,"",1);
 							personneDao.create(pers);
-							System.out.println("personne créée :  " + nameClient);
+							System.out.println("personne cr??e :  " + pers.getNom());
 
-						} else {
-							JSONObject jsonObject = new JSONObject(line);
-							ecrire.write(jsonObject.toString() + "\n");
+						}else if (line.equals("getClientfrom")){
+							System.out.println("getClient");
+							String query = lire.readLine();
+							System.out.println(query);
+							String res = gson.toJson(personneDao.findlike(query));
+							ecrire.write(res+"\n");
+							ecrire.flush();
+						}else if (line.equals("geParcours")){
+							ArrayList<ArrayList<Magasin>> parcours = new ArrayList<>();
+							ArrayList<Magasin> global = new ArrayList<>();
+							System.out.println("getparcours");
+							String query = lire.readLine();
+							System.out.println(query);
+							//recuperation des profils du client
+							ArrayList<Profile> listeP = personneDao.getProfilFromID(query);
+							//pour chaque profil, selection des magasin ayant le meme type
+							for(Profile p : listeP){
+								ArrayList<Magasin> temp = magasinDao.fingMagasinFromType(p.getName());
+								parcours.add(temp);
+								//tri des parcours pour fournir un parcours global (en fonction de tous les profils de l'utilisateur)
+								for(Magasin m : temp){
+									if(!global.contains(m)){
+										//ajout d'une contrainte modifiable par la suite
+										if(global.size()<=6)
+										{
+											if(Math.random()>0.2)
+												global.add(m);
+										}
+										//global.add(m);
+									}
+								}
+							}
+							ecrire.write(gson.toJson(parcours)+"\n");
+							ecrire.write(gson.toJson(global)+"\n");
+							ecrire.flush();
+						}
+						else {
+
+							ecrire.write("nothing\n");
 							ecrire.flush();
 
 						}
 					}
-				} catch (IOException | JSONException e) {
+				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					db.close(database);
 					// e.printStackTrace();

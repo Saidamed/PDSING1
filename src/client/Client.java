@@ -9,21 +9,23 @@ import java.io.OutputStreamWriter;
 import java.net.*;
 import java.util.Scanner;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import com.*;
+import com.google.gson.*;
+import views.Parcours;
 
 
 public class Client {
 
-	public static void main(String[] args) throws IOException, JSONException {
+	public static void main(String[] args) throws IOException {
 		Socket socket = new Socket("localhost", 2001);
-		System.out.println("Connecté au serveur");
+		System.out.println("Connect? au serveur");
 		OutputStreamWriter ecrire = new OutputStreamWriter(socket.getOutputStream(), "UTF-8");
 		BufferedReader lire = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
 		Scanner sc = new Scanner(System.in);
 		Boolean insert = true;
-		while (insert) {
+		Parcours p = new Parcours(ecrire,lire);
+		p.init();
+		//lancement ihm avec reader et writer
+		/*while (insert) {
 			System.out.println("Veuillez saisir le nom du client :");
 			String str = sc.nextLine();
 			System.out.println("nom : " + str);
@@ -39,7 +41,7 @@ public class Client {
 				ecrire.flush();
 				 
 			}
-		}
+		}*/
 
 	}
 }
