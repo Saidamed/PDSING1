@@ -11,6 +11,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.LinkedList;
+
 import com.google.gson.*;
 
 public class Parcours extends JFrame {
@@ -47,7 +49,7 @@ public class Parcours extends JFrame {
         this.textInput.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-                System.out.println("input!!!");
+               // System.out.println("input!!!"); tester que l'on ecrit
                 String val = textInput.getText();
                 Gson gson = new GsonBuilder().create();
                 try {
@@ -99,7 +101,7 @@ public class Parcours extends JFrame {
                         //attente du resultat
                         String res = lire.readLine();
                         ArrayList<ArrayList<Magasin>> parcours = gson.fromJson(res, new TypeToken<ArrayList<ArrayList<Magasin>>>() {}.getType());
-                        //ajout a la vue
+                        //ajout du resultat à la vue
                         listeModelDroite = new DefaultListModel<ArrayList<Magasin>>();
                         for(ArrayList<Magasin> i: parcours)
                         {
@@ -116,7 +118,7 @@ public class Parcours extends JFrame {
                 }
             }
         };
-        //btn decconexion
+        //btn deconexion
         //et affichage pour plus tard de la map :)
         this.listeView = new JList<>(this.listforView);
         this.listeView.addMouseListener(mouseListener);

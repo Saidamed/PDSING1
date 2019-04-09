@@ -99,7 +99,7 @@ public class Server {
 							System.out.println(query);
 							//recuperation des profils du client
 							ArrayList<Profile> listeP = personneDao.getProfilFromID(query);
-							//pour chaque profil, selection des magasin ayant le meme type
+							//pour chaque profil, selection des magasin ayec le meme type
 							for(Profile p : listeP){
 								ArrayList<Magasin> temp = magasinDao.fingMagasinFromType(p.getName());
 								parcours.add(temp);
