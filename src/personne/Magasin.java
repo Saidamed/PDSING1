@@ -4,10 +4,13 @@ public class Magasin {
     private String nom;
     private String categorie;
 
+
     public Magasin(String nom, String categorie) {
         this.nom = nom;
         this.categorie = categorie;
+
     }
+
 
     public String getNom() {
         return nom;
@@ -16,6 +19,7 @@ public class Magasin {
     public void setNom(String nom) {
         this.nom = nom;
     }
+
 
     public String getCategorie() {
         return categorie;

@@ -103,12 +103,12 @@ public class Parcours extends JFrame {
                         ArrayList<ArrayList<Magasin>> parcours = gson.fromJson(res, new TypeToken<ArrayList<ArrayList<Magasin>>>() {}.getType());
                         //ajout du resultat à la vue
                         listeModelDroite = new DefaultListModel<ArrayList<Magasin>>();
-                        for(ArrayList<Magasin> i: parcours)
-                        {
-                            listeModelDroite.addElement(i);
-                        }
+                        //for(ArrayList<Magasin> i: parcours)
+                       // {
+                           // listeModelDroite.addElement(i);
+                       // }
                         res = lire.readLine();
-                        ArrayList<Magasin> global = gson.fromJson(res,new TypeToken<ArrayList<Magasin>>() {}.getType());
+                       ArrayList<Magasin> global = gson.fromJson(res,new TypeToken<ArrayList<Magasin>>() {}.getType());
                         listeModelDroite.addElement(global);
                         listeDroite.setModel(listeModelDroite);
                         System.out.println(res);

@@ -16,7 +16,7 @@ public class ParcoursRenderer extends JList<Magasin> implements ListCellRenderer
         this.listforView = new DefaultListModel<Magasin>();
         this.titre = new TitreMagasin("Parcours :"+(index+1));
         listforView.addElement(this.titre);
-        for(Magasin i: value)
+       for(Magasin i: value)
         {
             listforView.addElement(i);
         }

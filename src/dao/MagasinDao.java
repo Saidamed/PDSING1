@@ -42,7 +42,7 @@ public class MagasinDao extends Dao<Magasin> {
         try {
             ResultSet result = this.connect
                     .createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-                    .executeQuery("SELECT * FROM magasin Where typeMagasin like '%" + type + "%'");
+                    .executeQuery("SELECT * FROM magasin Where typeMagasin like '%" + type + "%'order by etageEmpl,numEmpl");
             while (result.next()) {
                 System.out.println("client found");
                 Magasin p = new Magasin(result.getString("nomMagasin"),result.getString("typeMagasin"));

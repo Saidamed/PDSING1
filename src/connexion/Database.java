@@ -10,7 +10,7 @@ public class Database {
 	private static final String driver_name = "com.mysql.jdbc.Driver";
 	private static final String url = "jdbc:mysql://localhost:3306/basedetest";
 	private static final String user = "root";
-	private static final String password = "123";
+	private static final String password = "";
 	private ArrayList<Connection> pool;
 	private ArrayList<Connection> poolInUse;
 	private int nbConnection = 0;
