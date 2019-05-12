@@ -101,17 +101,14 @@ public class Server {
 							ArrayList<Profile> listeP = personneDao.getProfilFromID(query);
 							//pour chaque profil, selection des magasin ayec le meme type
 							for(Profile p : listeP){
-								ArrayList<Magasin> temp = magasinDao.fingMagasinFromType(p.getName());
+								ArrayList<Magasin> temp = magasinDao.findMagasinFromType(p.getName());
 								parcours.add(temp);
 								//tri des parcours pour fournir un parcours global (en fonction de tous les profils de l'utilisateur)
 								for(Magasin m : temp){
 									if(!global.contains(m)){
 										//ajout d'une contrainte modifiable par la suite
-										if(global.size()<=6)
-										{
-											if(Math.random()>0.2)
-												global.add(m);
-										}
+
+
 										//global.add(m);
 									}
 								}

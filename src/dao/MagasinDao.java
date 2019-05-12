@@ -37,7 +37,7 @@ public class MagasinDao extends Dao<Magasin> {
     public Personne find(String nom) {
         return super.find(nom);
     }
-    public ArrayList<Magasin> fingMagasinFromType(String type){
+    public ArrayList<Magasin> findMagasinFromType(String type){
         ArrayList<Magasin> liste = new ArrayList<>();
         try {
             ResultSet result = this.connect
@@ -45,7 +45,7 @@ public class MagasinDao extends Dao<Magasin> {
                     .executeQuery("SELECT * FROM magasin Where typeMagasin like '%" + type + "%'order by etageEmpl,numEmpl");
             while (result.next()) {
                 System.out.println("client found");
-                Magasin p = new Magasin(result.getString("nomMagasin"),result.getString("typeMagasin"));
+                Magasin p = new Magasin(result.getString("nomMagasin"),result.getString("typeMagasin"),result.getInt("etageEmpl"),result.getInt("numEmpl"));
                 liste.add(p);
             }
             return liste;
