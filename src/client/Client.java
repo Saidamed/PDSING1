@@ -16,7 +16,7 @@ import views.Parcours;
 public class Client {
 
 	public static void main(String[] args) throws IOException {
-		Socket socket = new Socket("localhost",2001);
+		Socket socket = new Socket(InetAddress.getLocalHost(),2001);
 		System.out.println("Connect? au serveur");
 		OutputStreamWriter ecrire = new OutputStreamWriter(socket.getOutputStream(), "UTF-8");
 		BufferedReader lire = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));

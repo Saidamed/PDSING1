@@ -25,6 +25,7 @@ public class Parcours extends JFrame {
     private JPanel rightPanel;
     private JList<Personne> listeView;
     private JTextField textInput;
+    JPanel panelDroite = new JPanel();
 
     private JList<ArrayList<Magasin>> listeDroite;
     public Parcours(OutputStreamWriter ecrire,BufferedReader lire)
@@ -46,7 +47,8 @@ public class Parcours extends JFrame {
         this.leftPanel.setLayout(new BorderLayout());
         //input text et liste
         this.textInput = new JTextField(25);
-        this.textInput.addKeyListener(new KeyListener() {
+        this.textInput.addKeyListener(new KeyListener()
+        {
             @Override
             public void keyTyped(KeyEvent e) {
                // System.out.println("input!!!"); tester que l'on ecrit
@@ -101,12 +103,12 @@ public class Parcours extends JFrame {
                         //attente du resultat
                         String res = lire.readLine();
                         ArrayList<ArrayList<Magasin>> parcours = gson.fromJson(res, new TypeToken<ArrayList<ArrayList<Magasin>>>() {}.getType());
-                        //ajout du resultat Ã  la vue
+                        //ajout du resultat à la vue
                         listeModelDroite = new DefaultListModel<ArrayList<Magasin>>();
                         //for(ArrayList<Magasin> i: parcours)
-                       // {
-                           // listeModelDroite.addElement(i);
-                       // }
+                        //{
+                          //listeModelDroite.addElement(i);
+                        //}
                         res = lire.readLine();
                        ArrayList<Magasin> global = gson.fromJson(res,new TypeToken<ArrayList<Magasin>>() {}.getType());
                         listeModelDroite.addElement(global);
@@ -118,16 +120,34 @@ public class Parcours extends JFrame {
                 }
             }
         };
+        MouseListener mouseListener2 = new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+              panelDroite.removeAll();
+                listeDroite = new JList<>();
+                listeDroite.setCellRenderer(new ParcoursRenderer());
+
+                panelDroite.add(listeDroite);
+
+                listeModelDroite = new DefaultListModel<ArrayList<Magasin>>();
+              //remove(listeDroite);
+              repaint();
+
+                System.out.println("jeje");
+
+            }
+
+        };
         //btn deconexion
         //et affichage pour plus tard de la map :)
         this.listeView = new JList<>(this.listforView);
         this.listeView.addMouseListener(mouseListener);
+        this.textInput.addMouseListener(mouseListener2);
         this.leftPanel.add(this.textInput,BorderLayout.NORTH);
         this.leftPanel.add(this.listeView,BorderLayout.CENTER);
         //liste de droite
         this.listeDroite = new JList<>();
         this.listeDroite.setCellRenderer(new ParcoursRenderer());
-        JPanel panelDroite = new JPanel();
+
         panelDroite.add(this.listeDroite);
         this.add(this.leftPanel);
         this.add(panelDroite);
@@ -139,4 +159,6 @@ public class Parcours extends JFrame {
     private void rechercheName(String name){
 
     }
+
+
 }

@@ -107,9 +107,8 @@ public class Server {
 								for(Magasin m : temp){
 									if(!global.contains(m)){
 										//ajout d'une contrainte modifiable par la suite
-
-
-										//global.add(m);
+                                        if(global.size()<=6)
+										global.add(m);
 									}
 								}
 							}

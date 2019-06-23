@@ -3,18 +3,18 @@ package personne;
 public class Magasin {
     private String nom;
     private String categorie;
-    private int numEmpl;
-    private int etageEmpl;
+   // private int numEmpl;
+    //private int etageEmpl;
 
 
-    public Magasin(String nom, String categorie, int numEmpl, int etageEmpl) {
+    public Magasin(String nom, String categorie) {
         this.nom = nom;
         this.categorie = categorie;
-        this.numEmpl = numEmpl;
-        this.etageEmpl = etageEmpl;
+       // this.numEmpl = numEmpl;
+        //this.etageEmpl = etageEmpl;
     }
 
-    public int getNumEmpl() {
+   /* public int getNumEmpl() {
         return numEmpl;
     }
 
@@ -29,7 +29,7 @@ public class Magasin {
     public void setEtageEmpl(int etageEmpl) {
         this.etageEmpl = etageEmpl;
     }
-
+*/
     public String getNom() {
         return nom;
     }
